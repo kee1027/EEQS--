@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from celery.schedules import crontab
@@ -18,16 +19,41 @@ from celery.schedules import crontab
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+def _load_dotenv(env_path=None):
+    """极简 .env 加载器：把 KEY=VALUE 写入 os.environ（不覆盖已有变量）。
+
+    避免引入 python-dotenv 依赖；支持空行与 # 注释。
+    """
+    env_file = Path(env_path) if env_path else BASE_DIR / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key, value = key.strip(), value.strip()
+        if key:
+            os.environ.setdefault(key, value)
+
+
+_load_dotenv()
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-gi#w-gvw)ox)i1au4z8x_#j556nl-$9xue#rfux%($fh%jq7+r"
+# 从环境变量 DJANGO_SECRET_KEY 读取；本地开发请在项目根目录创建 .env（见 .env.example）
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-dev-placeholder-change-me",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() in ("1", "true", "yes")
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
 
 # Application definition
@@ -96,16 +122,13 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 
 DATABASES = {
     'default': {
-        # 如果你安装了 django-timescaledb 库，使用下面这个 ENGINE
         'ENGINE': 'django.db.backends.postgresql',
-        # 如果暂时没装，也可以先用 Django 自带的普通 PG 引擎：
-        # 'ENGINE': 'django.db.backends.postgresql',
-
-        'NAME': 'eeqsDB',          # 对应 POSTGRES_DB
-        'USER': 'shy',             # 对应 POSTGRES_USER
-        'PASSWORD': 'eeqs123456',   # 对应 POSTGRES_PASSWORD
-        'HOST': '127.0.0.1',       # 本地运行的 Docker 填 127.0.0.1 即可
-        'PORT': '15432',            # 映射出来的端口
+        # 从环境变量读取（本地开发写在 .env 里，见 .env.example）
+        'NAME': os.environ.get('POSTGRES_DB', 'eeqsDB'),
+        'USER': os.environ.get('POSTGRES_USER', 'shy'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+        'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('POSTGRES_PORT', '15432'),
     }
 }
 
@@ -171,7 +194,10 @@ TILE_MAX_ZOOM = 22
 TILE_CACHE_CONTROL = "public, max-age=3600"
 
 # Hydrology forecast settings
-HYDROLOGY_MODEL_SCRIPT_PATH = r"F:\模型脚本\lstm\lstm_enkf_online_meteorology.py"
+HYDROLOGY_MODEL_SCRIPT_PATH = os.environ.get(
+    "HYDROLOGY_MODEL_SCRIPT_PATH",
+    r"F:\模型脚本\lstm\lstm_enkf_online_meteorology.py",
+)
 HYDROLOGY_MODEL_ENTRYPOINT = "run_forecast"
 HYDROLOGY_DEFAULT_MODEL_NAME = "lstm"
 HYDROLOGY_DEFAULT_MODEL_VERSION = "v1"
@@ -194,7 +220,7 @@ SPECTACULAR_SETTINGS = {
 # =============================================================================
 
 # Redis broker URL (database 0)
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0")
 
 # Store task results in the database via django-celery-results
 CELERY_RESULT_BACKEND = "django-db"
