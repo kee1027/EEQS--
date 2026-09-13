@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+db.sqlite3
+dump.rdb
+server.log
+data/raster_data/
+data/tiles/
+data/tiles_modis_snow/
