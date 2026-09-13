@@ -23,7 +23,7 @@
 将下载的 zip 解压到项目内，例如：
 
 ```
-C:\Users\AINUC\Desktop\Djanbo\djangotutorial\
+djangotutorial/
 ├── venv\
 ├── data\
 ├── mysite\
@@ -37,7 +37,7 @@ C:\Users\AINUC\Desktop\Djanbo\djangotutorial\
 ### 步骤 3：启动 Redis 服务器
 
 ```bash
-cd C:\Users\AINUC\Desktop\Djanbo\djangotutorial
+cd djangotutorial
 
 # 启动 Redis（使用默认配置）
 redis\redis-server.exe
@@ -60,7 +60,7 @@ redis\redis-server.exe redis\redis.windows.conf
 打开另一个终端窗口：
 
 ```bash
-cd C:\Users\AINUC\Desktop\Djanbo\djangotutorial
+cd djangotutorial
 redis\redis-cli.exe ping
 ```
 
