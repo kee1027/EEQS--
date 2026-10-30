@@ -81,6 +81,24 @@ export const STATION_CONFIG = {
     latitude: 47.30,
     apiName: 'SL',
     fields: 'standard'
+  },
+  HL: {
+    name: 'HL',
+    altitude: '—',
+    type: '—',
+    longitude: '—',
+    latitude: '—',
+    apiName: 'HL',
+    fields: 'standard'
+  },
+  HSZ: {
+    name: 'HSZ',
+    altitude: '—',
+    type: '—',
+    longitude: '—',
+    latitude: '—',
+    apiName: 'HSZ',
+    fields: 'standard'
   }
 }
 

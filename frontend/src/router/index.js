@@ -42,7 +42,9 @@ export const constantRoutes = [
           { path: 'akesala', name: 'WeatherAkesala', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '阿克萨拉观测场', stationId: 'AKS' } },
           { path: 'keketuohai', name: 'WeatherKeketuohai', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '可可托海滑雪场站', stationId: 'KKTH' } },
           { path: 'kekesuli', name: 'WeatherKekesuli', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '可可苏里气象站', stationId: 'KKSLM' } },
-          { path: 'senlin', name: 'WeatherSenlin', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '森林站', stationId: 'SL' } }
+          { path: 'senlin', name: 'WeatherSenlin', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '森林站', stationId: 'SL' } },
+          { path: 'hl', name: 'WeatherHL', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: 'HL', stationId: 'HL'} },
+          { path: 'hsz', name: 'WeatherHSZ', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: 'HSZ', stationId: 'HSZ'} }
         ]
       },
       {
@@ -79,7 +81,9 @@ export const constantRoutes = [
           { path: 'akesala', name: 'SnowAkesala', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '阿克萨拉观测场', stationId: 'AKS' } },
           { path: 'keketuohai', name: 'SnowKeketuohai', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '可可托海滑雪场站', stationId: 'KKTH' } },
           { path: 'kekesuli', name: 'SnowKekesuli', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '可可苏里降雪站', stationId: 'KKSLS' } },
-          { path: 'senlin', name: 'SnowSenlin', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '森林站', stationId: 'SL' } }
+          { path: 'senlin', name: 'SnowSenlin', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: '森林站', stationId: 'SL' } },
+          { path: 'hl', name: 'SnowHL', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: 'HL', stationId: 'HL'} },
+          { path: 'hsz', name: 'SnowHSZ', component: () => import('@/views/sites/StationDetail.vue'), meta: { title: 'HSZ', stationId: 'HSZ'} }
         ]
       },
       {
