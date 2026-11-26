@@ -161,6 +161,21 @@
       <!-- 标准站点图表 -->
       <section v-if="isStandardStation" class="charts-section">
         <div class="card chart-card">
+          <div class="card-header">积雪深度 (cm)</div>
+          <div ref="snowDepthChart" class="chart-container"></div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-header">雪水当量 (mm)</div>
+          <div ref="snowWaterChart" class="chart-container"></div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-header">雪密度 (kg/m³)</div>
+          <div ref="snowDensityChart" class="chart-container"></div>
+        </div>
+
+        <div class="card chart-card">
           <div class="card-header">气温 摄氏度</div>
           <div ref="airTempChart" class="chart-container"></div>
         </div>
@@ -204,6 +219,11 @@
         </div>
 
         <div class="card chart-card">
+          <div class="card-header">斜向观测带雪密度 (kg/m³)</div>
+          <div ref="obliqueDensityChart" class="chart-container"></div>
+        </div>
+
+        <div class="card chart-card">
           <div class="card-header">水平观测带冰含量 (%)</div>
           <div ref="horizontalIceChart" class="chart-container"></div>
         </div>
@@ -211,6 +231,11 @@
         <div class="card chart-card">
           <div class="card-header">水平观测带水含量 (%)</div>
           <div ref="horizontalWaterChart" class="chart-container"></div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-header">水平观测带雪密度 (kg/m³)</div>
+          <div ref="horizontalDensityChart" class="chart-container"></div>
         </div>
 
         <div class="card chart-card">
@@ -602,7 +627,8 @@ export default {
       // 构建请求参数
       const params = {
         station__name: this.stationConfig.apiName,
-        ordering: 'timestamp'
+        ordering: 'timestamp',
+        limit: 10000 // 后端默认分页，不传 limit 会导致大范围查询被截断
       };
       if (reqStart) {
         params.timestamp__gte = this.toISOString(new Date(reqStart));

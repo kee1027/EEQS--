@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MODIS 积雪遥感监测 - 静态预览</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #f8f9fa;
+      color: #1e2125;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+    }
+    .page-header {
+      padding: 32px 5%;
+      background: white;
+      border-bottom: 1px solid #eaedf2;
+    }
+    .page-header h1 {
+      font-size: 26px;
+      margin: 0;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .page-desc {
+      font-size: 14px;
+      color: #64748b;
+      margin: 8px 0 0 0;
+    }
+    .breadcrumb {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+    .dashboard-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid #eaedf2;
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .stat-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .main-visual {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+    }
+    .visual-card {
+      background: white;
+      border: 1px solid #eaedf2;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #eaedf2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .card-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0;
+    }
+    .card-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      background: #f1f5f9;
+      color: #475569;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+    .image-wrapper {
+      padding: 16px;
+      background: #fafafa;
+    }
+    .image-wrapper img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      display: block;
+    }
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .info-card {
+      background: white;
+      border: 1px solid #eaedf2;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    .info-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0 0 12px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .legend-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .legend-color {
+      width: 20px;
+      height: 14px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .legend-label {
+      font-weight: 500;
+      color: #334155;
+      min-width: 70px;
+    }
+    .legend-desc {
+      color: #94a3b8;
+      font-size: 11px;
+    }
+    .range-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .range-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+    .range-key { color: #64748b; }
+    .range-val { color: #0f172a; font-weight: 500; }
+    .data-notes {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.8;
+    }
+    .data-notes li { margin-bottom: 4px; }
+    @media (max-width: 1024px) {
+      .main-visual { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .page-header { padding: 20px 16px; }
+      .dashboard-content { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <nav class="breadcrumb">积雪动态 / 遥感</nav>
+    <h1>MODIS 积雪遥感监测</h1>
+    <p class="page-desc">基于 MOD10A1 NDSI 数据的阿勒泰地区积雪覆盖分布</p>
+  </header>
+
+  <main class="dashboard-content">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #e0f3f8; color: #2c7fb8;">📅</div>
+        <div class="stat-info">
+          <div class="stat-value">2026-01-05</div>
+          <div class="stat-label">数据日期</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #fee090; color: #d95f0e;">🛰️</div>
+        <div class="stat-info">
+          <div class="stat-value">MOD10A1</div>
+          <div class="stat-label">数据产品</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #fdae61; color: #a63603;">📐</div>
+        <div class="stat-info">
+          <div class="stat-value">500m</div>
+          <div class="stat-label">空间分辨率</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #f46d43; color: #7f2704;">🗺️</div>
+        <div class="stat-info">
+          <div class="stat-value">h23v04+h24v04</div>
+          <div class="stat-label">覆盖瓦片</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-visual">
+      <div class="visual-card">
+        <div class="card-header">
+          <h3>阿勒泰地区积雪覆盖分布</h3>
+          <div class="card-tags">
+            <span class="tag">NDSI Snow Cover</span>
+            <span class="tag">EPSG:4326</span>
+          </div>
+        </div>
+        <div class="image-wrapper">
+          <img src="images/modis_snow_cover_altay.png" alt="MODIS NDSI Snow Cover - Altay Region" />
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="info-card">
+          <h4>🎨 积雪覆盖分级</h4>
+          <div class="legend-list">
+            <div class="legend-item">
+              <span class="legend-color" style="background: #e0f3f8;"></span>
+              <span class="legend-label">0% ~ 20%</span>
+              <span class="legend-desc">无积雪/微量</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #74add1;"></span>
+              <span class="legend-label">20% ~ 40%</span>
+              <span class="legend-desc">低覆盖</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #fee090;"></span>
+              <span class="legend-label">40% ~ 60%</span>
+              <span class="legend-desc">中低覆盖</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #fdae61;"></span>
+              <span class="legend-label">60% ~ 80%</span>
+              <span class="legend-desc">中高覆盖</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #f46d43;"></span>
+              <span class="legend-label">80% ~ 100%</span>
+              <span class="legend-desc">高覆盖</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h4>📍 空间范围</h4>
+          <div class="range-info">
+            <div class="range-row">
+              <span class="range-key">经度</span>
+              <span class="range-val">85.5°E ~ 91.1°E</span>
+            </div>
+            <div class="range-row">
+              <span class="range-key">纬度</span>
+              <span class="range-val">45.0°N ~ 49.2°N</span>
+            </div>
+            <div class="range-row">
+              <span class="range-key">中心区域</span>
+              <span class="range-val">阿勒泰地区</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h4>📋 数据说明</h4>
+          <ul class="data-notes">
+            <li>数据来源于 MODIS Terra 卫星 MOD10A1 产品</li>
+            <li>采用 NDSI（归一化差分积雪指数）算法反演</li>
+            <li>已过滤云和水体掩膜（无效值已剔除）</li>
+            <li>两景影像（h23v04 + h24v04）无缝拼接</li>
+            <li>从正弦投影重投影至 WGS84 坐标系</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

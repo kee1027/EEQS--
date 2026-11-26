@@ -9,7 +9,6 @@ import * as tableField from './station/table-field'
 import * as dashboard from './dashboard/dashboard'
 import * as manualData from './manual-data'
 import * as hydrology from './hydrology/hydrology'
-import * as aiAssistant from './ai-assistant'
 
 export default {
   station,
@@ -21,6 +20,5 @@ export default {
   tableField,
   dashboard,
   manualData,
-  hydrology,
-  aiAssistant
+  hydrology
 }

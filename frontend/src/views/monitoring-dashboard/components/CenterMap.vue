@@ -105,19 +105,29 @@ export default {
     },
 
     loadStations() {
+      // 站点标识图形：水文站沿用现有图片素材；水库/积雪场采用内联 SVG，类型区分一目了然
+      const RESERVOIR_SVG = `<svg viewBox="0 0 24 24" width="26" height="26"><circle cx="12" cy="12" r="11" fill="#1e88e5"/><path d="M12 4.5c-1.9 2.8-3.3 4.4-3.3 6.2A3.3 3.3 0 0 0 12 14a3.3 3.3 0 0 0 3.3-3.3c0-1.8-1.4-3.4-3.3-6.2z" fill="#ffffff"/><path d="M6.5 16.5c1.4-1.1 2.8-1.1 4.2 0s2.8 1.1 4.2 0 2.8-1.1 2.8 0" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`;
+      const SNOWFIELD_SVG = `<svg viewBox="0 0 24 24" width="26" height="26"><circle cx="12" cy="12" r="11" fill="#0ea5e9"/><g stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"><path d="M12 4.5v15M5.5 8.25l13 7.5M18.5 8.25l-13 7.5"/><path d="M12 4.5l-1.8 1.8M12 4.5l1.8 1.8M12 19.5l-1.8-1.8M12 19.5l1.8-1.8"/></g></svg>`;
+
       const stationTypes = [
         { name: '水文站', url: '/json/水文站.geojson', icon: require('@/assets/水文站 - 已编辑.png') },
-        { name: '水库', url: '/json/水库.geojson', icon: require('@/assets/水文站 - 已编辑.png') },
-        { name: '积雪场', url: '/json/积雪场.geojson', icon: require('@/assets/水文站 - 已编辑.png') }
+        { name: '水库', url: '/json/水库.geojson', svg: RESERVOIR_SVG },
+        { name: '积雪场', url: '/json/积雪场.geojson', svg: SNOWFIELD_SVG }
       ];
 
-      const createIcon = (iconUrl, featureName) => {
+      const createIcon = (type, featureName) => {
+        const markerHtml = type.svg
+          ? `<div class='icon-container'>
+               <span class='station-svg'>${type.svg}</span>
+               <span class='station-name'>${featureName}</span>
+             </div>`
+          : `<div class='icon-container'>
+               <img src='${type.icon}' class='station-icon'/>
+               <span class='station-name'>${featureName}</span>
+             </div>`;
         return L.divIcon({
           className: 'custom-div-icon',
-          html: `<div class='icon-container'>
-                   <img src='${iconUrl}' class='station-icon'/>
-                   <span class='station-name'>${featureName}</span>
-                 </div>`,
+          html: markerHtml,
           iconSize: [80, 40],
           iconAnchor: [40, 40],
           popupAnchor: [0, -40]
@@ -136,7 +146,7 @@ export default {
           // Data is standard GeoJSON (WGS84), Leaflet handles it by default
           L.geoJSON(data, {
             pointToLayer: (feature, latlng) => {
-              const marker = L.marker(latlng, { icon: createIcon(type.icon, feature.properties.name) });
+              const marker = L.marker(latlng, { icon: createIcon(type, feature.properties.name) });
 
               // Create popup content from feature properties
               const props = feature.properties;
@@ -161,7 +171,7 @@ export default {
                 '阿克萨拉观测场': '/weather/sites/akesala',
                 '可可托海滑雪场站': '/weather/sites/keketuohai',
                 '可可苏里观测场': '/weather/sites/kekesuli',
-                '森林站': '/weather/sites/senlin',
+                '三道海子站': '/weather/sites/senlin',
                 // 预警站的路由
                 "预警站1号": "/weather/sites/kuwei",
                 "预警站2号": "/weather/sites/kayier",
@@ -250,6 +260,15 @@ export default {
 .station-icon {
   width: 25px;
   height: 25px;
+}
+
+.station-svg {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 .station-name {

@@ -25,6 +25,24 @@ export const STATION_CONFIG = {
     fields: 'standard',
     photo: kyePhoto
   },
+  HL: {
+    name: '哈龙',
+    altitude: 1475,
+    type: '综合观测场',
+    longitude: 89.39,
+    latitude: 47.21,
+    apiName: 'HL',
+    fields: 'standard'
+  },
+  HSZ: {
+    name: '红山嘴',
+    altitude: 1475,
+    type: '综合观测场',
+    longitude: 89.39,
+    latitude: 47.21,
+    apiName: 'HSZ',
+    fields: 'standard'
+  },
   JG: {
     name: '金格观测系统',
     altitude: 1600,
@@ -40,7 +58,7 @@ export const STATION_CONFIG = {
     type: '观测场',
     longitude: 89.25,
     latitude: 47.25,
-    apiName: 'AKS',
+    apiName: 'AKSL',
     fields: 'standard'
   },
   KKTH: {
@@ -49,11 +67,11 @@ export const STATION_CONFIG = {
     type: '滑雪场站',
     longitude: 89.50,
     latitude: 47.50,
-    apiName: 'KKTH',
+    apiName: 'HXC',
     fields: 'standard',
     photo: kkthPhoto
   },
-  KKS: {
+  KKSLM: {
     name: '可可苏里气象站',
     altitude: 1350,
     type: '气象站',
@@ -74,30 +92,12 @@ export const STATION_CONFIG = {
     photo: kkslsPhoto
   },
   SL: {
-    name: '森林站',
+    name: '三道海子站',
     altitude: 1600,
     type: '观测场',
     longitude: 89.35,
     latitude: 47.30,
-    apiName: 'SL',
-    fields: 'standard'
-  },
-  HL: {
-    name: 'HL',
-    altitude: '—',
-    type: '—',
-    longitude: '—',
-    latitude: '—',
-    apiName: 'HL',
-    fields: 'standard'
-  },
-  HSZ: {
-    name: 'HSZ',
-    altitude: '—',
-    type: '—',
-    longitude: '—',
-    latitude: '—',
-    apiName: 'HSZ',
+    apiName: 'SDHZ',
     fields: 'standard'
   }
 }
@@ -124,6 +124,9 @@ export const SNOW_FIELDS = [
 ]
 
 export const STANDARD_CHARTS = [
+  { ref: 'snowDepthChart', title: '积雪深度 (cm)', field: 'snow_depth', color: '#45c8e0' },
+  { ref: 'snowWaterChart', title: '雪水当量 (mm)', field: 'swe', color: '#9b6bd3' },
+  { ref: 'snowDensityChart', title: '雪密度 (kg/m³)', field: 'snow_density', color: '#3bb6a0' },
   { ref: 'airTempChart', title: '气温 (°C)', field: 'ta', color: '#2c7be5' },
   { ref: 'airHumidityChart', title: '空气相对湿度 (%)', field: 'rh', color: '#00d27a' },
   { ref: 'windSpeedChart', title: '风速 (m/s)', field: 'ws', color: '#f5a623' },
@@ -135,8 +138,10 @@ export const SNOW_CHARTS = [
   { ref: 'ush9Chart', title: 'USH-9雪深 (cm)', field: 'ush9_snow_depth', color: '#2c7be5' },
   { ref: 'obliqueIceChart', title: '斜向观测带冰含量 (%)', field: 'oblique_ice_content', color: '#00d27a' },
   { ref: 'obliqueWaterChart', title: '斜向观测带水含量 (%)', field: 'oblique_water_content', color: '#f5a623' },
+  { ref: 'obliqueDensityChart', title: '斜向观测带雪密度 (kg/m³)', field: 'oblique_snow_density', color: '#45c8e0' },
   { ref: 'horizontalIceChart', title: '水平观测带冰含量 (%)', field: 'horizontal_ice_content', color: '#e63757' },
   { ref: 'horizontalWaterChart', title: '水平观测带水含量 (%)', field: 'horizontal_water_content', color: '#6b5ce7' },
+  { ref: 'horizontalDensityChart', title: '水平观测带雪密度 (kg/m³)', field: 'horizontal_snow_density', color: '#00b87a' },
   { ref: 'snowDriftFluxChart', title: '风吹雪平均通量', multi: true, fields: ['snow_drift_flux_100cm', 'snow_drift_flux_200cm'], colors: ['#2c7be5', '#00d27a'] },
   { ref: 'windSpeedChart', title: '平均风速 (m/s)', multi: true, fields: ['wind_speed_100cm', 'wind_speed_200cm'], colors: ['#f5a623', '#e63757'] }
 ]

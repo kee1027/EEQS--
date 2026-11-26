@@ -23,5 +23,12 @@ export function getWeatherData(params, config = {}) {
     method: 'get',
     params,
     ...config
+  }).then(res => {
+    // DRF 分页结构解包：{count, next, previous, results} -> 直接返回数组
+    // 兼容后端关闭分页时返回纯数组的情况
+    if (res && res.data && !Array.isArray(res.data) && Array.isArray(res.data.results)) {
+      res.data = res.data.results
+    }
+    return res
   })
 }

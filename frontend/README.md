@@ -32,6 +32,7 @@ npm run dev
 ```
 
 > ⚠️ **重要提示**：本项目在 **Git Bash** 环境下启动开发服务器存在已知兼容性问题：
+>
 > - `&` 后台运行不生效，进程会被随命令结束而终止
 > - 管道 `|` 会阻塞进程（如 `tee`）
 > - `npx` 可能不在 PATH 中
@@ -41,13 +42,13 @@ npm run dev
 
 ## 常用命令速查
 
-| 命令 | 说明 | 推荐终端 |
-|------|------|----------|
-| `npm run dev` | 启动开发服务器（端口 9528） | VSCode / CMD / PowerShell |
-| `npm run build` | 生产环境构建 | 任意 |
-| `npm run lint` | 运行 ESLint 代码检查 | 任意 |
-| `npm run preview` | 预览生产构建 | 任意 |
-| `npm run svgo` | 优化 SVG 图标 | 任意 |
+| 命令              | 说明                        | 推荐终端                  |
+| ----------------- | --------------------------- | ------------------------- |
+| `npm run dev`     | 启动开发服务器（端口 9528） | VSCode / CMD / PowerShell |
+| `npm run build`   | 生产环境构建                | 任意                      |
+| `npm run lint`    | 运行 ESLint 代码检查        | 任意                      |
+| `npm run preview` | 预览生产构建                | 任意                      |
+| `npm run svgo`    | 优化 SVG 图标               | 任意                      |
 
 ## Git Bash 兼容方案
 
@@ -92,9 +93,9 @@ src/
 ## 主要功能模块
 
 - **首页仪表盘** - 综合数据展示
-- **气象观测** - 7个站点实时气象数据（库威、喀依尔、金格、阿克萨拉、可可托海、可可苏里、森林站）
+- **气象观测** - 7 个站点实时气象数据（库威、喀依尔、金格、阿克萨拉、可可托海、可可苏里、森林站）
 - **积雪动态** - 积雪站点监测与遥感分析
-- **水文观测** - 团结桥、LSW水库、BEJ大桥水文数据
+- **水文观测** - 团结桥、LSW 水库、BEJ 大桥水文数据
 - **水资源预报** - 十天/月/年径流预测
 - **洪水预警** - 预警信息展示
 - **数据录入** - 人工数据录入
@@ -102,17 +103,31 @@ src/
 ## 开发注意事项
 
 ### 1. 终端环境选择
+
 - **推荐**：VSCode 内置终端、Windows CMD、PowerShell
 - **避免**：Git Bash（存在后台进程、路径、管道等兼容性问题）
 
 ### 2. 代理配置
-开发服务器代理配置在 `vue.config.js` 中：
+
+开发服务器代理配置在 `vue.config.js` 中，后端地址通过 `.env.development` 文件的环境变量 `VUE_APP_BACKEND_URL` 控制：
+
 ```
-/api -> http://10.16.13.46:8000
+/api -> VUE_APP_BACKEND_URL
 ```
 
+**后端 IP 变化时，只需修改 `.env.development` 文件即可，无需改动代码：**
+
+```bash
+# .env.development
+VUE_APP_BACKEND_URL=http://新的IP:8000
+```
+
+修改后重启 `npm run dev` 生效。
+
 ### 3. 实况图片配置
+
 站点实况图存放于 `src/assets/站点实况图/`，在 `src/views/sites/station-config.js` 中通过 `import` 引入并映射到对应站点。图片命名规则：
+
 - `库威气象站.jpg` → KW
 - `库威水文站.jpg` → KYE
 - `可可苏里气象站.jpg` → KKS
@@ -120,6 +135,7 @@ src/
 - `可可托海滑雪场.jpg` → KKTH
 
 ### 4. 性能优化要点
+
 - 使用 `timestamp__gte` / `timestamp__lte` 按需加载数据，避免全量查询
 - 前端缓存 `dataCache` + `loadedRange`，重复范围直接过滤渲染
 - `AbortController` 取消未完成请求，防止竞态

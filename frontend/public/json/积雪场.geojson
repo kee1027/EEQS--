@@ -9,6 +9,6 @@
 { "type": "Feature", "properties": { "Id": 3, "name": "阿克萨拉观测场" }, "geometry": { "type": "Point", "coordinates": [ 89.38, 47.89 ] } },
 { "type": "Feature", "properties": { "Id": 4, "name": "可可托海滑雪场站" }, "geometry": { "type": "Point", "coordinates": [ 90.09, 47.2 ] } },
 { "type": "Feature", "properties": { "Id": 5, "name": "可可苏里观测场" }, "geometry": { "type": "Point", "coordinates": [ 89.75, 46.01 ] } },
-{ "type": "Feature", "properties": { "Id": 6, "name": "森林站" }, "geometry": { "type": "Point", "coordinates": [ 90.0166, 47.1983 ] } }
+{ "type": "Feature", "properties": { "Id": 6, "name": "三道海子站" }, "geometry": { "type": "Point", "coordinates": [ 90.0166, 47.1983 ] } }
 ]
 }

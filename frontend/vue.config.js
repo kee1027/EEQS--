@@ -26,10 +26,15 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    before(app) {
+      // Print the resolved backend target when dev server starts
+      console.log('[devServer] VUE_APP_BACKEND_URL =', process.env.VUE_APP_BACKEND_URL)
+    },
     proxy: {
       '/api': {
-        target: 'http://10.16.13.46:8000',
+        target: process.env.VUE_APP_BACKEND_URL,
         changeOrigin: true,
+        cookieDomainRewrite: 'localhost',
         pathRewrite: {
           '^/api': '/api'
         }
@@ -98,7 +103,7 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-    
+
     const excludedFiles = [
       './src/views/analysis/data/wind-rose/index_bak.vue',
       './src/views/analysis/station/baidu-map-native.vue',
